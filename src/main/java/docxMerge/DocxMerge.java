@@ -86,30 +86,42 @@ public class DocxMerge {
         int pos = this.mainXwpf.getTables().size() - 1;
         this.mainXwpf.setTable(pos, table);
 
+        //region picture detection
+
         for (XWPFTableRow row : table.getRows()) {
             for (XWPFTableCell cell : row.getTableCells()) {
                 for (XWPFParagraph cellParagraph : cell.getParagraphs()) {
                     for (XWPFRun cellRun : cellParagraph.getRuns()) {
                         if (cellRun.getEmbeddedPictures().size() > 0) {
                             System.out.println("Bin eine Tabelle und hab ein Bild !");
+                            /**
+                             * Die idee ist, sobald ich sehe wo ein Bild ist, dann auf die
+                             * bereits hinzugefügte Tabelle in der mainWxpf hinzugehen und DORT
+                             * auf der selber stelle, row, cell, das selbe Bild einzufügen !
+                             */
                         }
                     }
                 }
             }
         }
 
+        //endregion picture detection
 
     }
 
     private void appendParagraphToMainDocument(IBodyElement bodyElement) {
         XWPFParagraph paragraph = (XWPFParagraph) bodyElement;
         XWPFParagraph mainParagraph = this.mainXwpf.createParagraph();
+
+        //region Picture detection
+
         for (XWPFRun srcRun : paragraph.getRuns()) {
-            //if (srcRun.getEmbeddedPictures().size() > 0) {
+            if (srcRun.getEmbeddedPictures().size() > 0) {
                 addPictureToMainDocument(srcRun, mainParagraph);
-            //}
+            }
         }
 
+        //endregion picture detection
 
         int pos = this.mainXwpf.getParagraphs().size() - 1;
         this.mainXwpf.setParagraph(paragraph, pos);

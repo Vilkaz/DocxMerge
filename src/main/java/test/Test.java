@@ -47,7 +47,7 @@ public class Test {
         ArrayList<Docx> documents2 = new ArrayList<Docx>();
         documents2.add(cover);
         documents2.add(temp1);
-        documents2.add(temp2);
+        //documents2.add(temp2);
         documents2.add(temp3);
         //documents2.add(content);
 
