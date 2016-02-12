@@ -45,7 +45,7 @@ public class Test {
 
 
         ArrayList<Docx> documents2 = new ArrayList<Docx>();
-        //documents2.add(cover);
+        documents2.add(cover);
         documents2.add(temp1);
         documents2.add(temp2);
         documents2.add(temp3);
@@ -54,7 +54,6 @@ public class Test {
         result =  docxMerge.mergeDocx(documents2,true);
 
         result.save("C:\\development\\intelliJProjects\\PagingProto2\\templates\\temp\\myTemplatesMerged.docx");
-
 
     }
 
