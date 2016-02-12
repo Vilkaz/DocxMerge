@@ -1,13 +1,12 @@
 package test;
 
-import contentPage.ContentPage;
+import contentPage.ContentPageController;
 import cover.CoverController;
-import org.apache.poi.xwpf.usermodel.*;
+import docxMerge.DocxMerge;
+import myTemplate.MyTemplateController;
 import pl.jsolve.templ4docx.core.Docx;
 
-import java.io.FileOutputStream;
-import java.io.OutputStream;
-import java.util.Collection;
+import java.util.ArrayList;
 
 /**
  * Created by vkukanauskas on 09/02/2016.
@@ -16,35 +15,45 @@ public class Test {
     public static void main(String[] args) throws Exception {
         Docx cover = new CoverController().getEmptyCoverTemplate();
         Docx cover2 = new CoverController().getEmptyCoverTemplate();
-        Docx content = new ContentPage().getEmptyContentTemplate();
+        Docx content = new ContentPageController().getEmptyContentTemplate();
+        Docx content2 = new ContentPageController().getEmptyContentTemplate();
 
-        CoverController.setDummyData(cover);
+        CoverController.setDummyDataForCover(cover);
+        ContentPageController.setDummyForContent(content);
 
-        XWPFParagraph paragraph = cover.getXWPFDocument().createParagraph();
-        //paragraph.setPageBreak(true);
+        DocxMerge docxMerge = new DocxMerge();
 
-        XWPFDocument xw = content.getXWPFDocument();
-        Collection<XWPFParagraph> paragraphs = xw.getParagraphs();
-        XWPFDocument destDoc = cover.getXWPFDocument();
-        for (IBodyElement bodyElement : xw.getBodyElements()) {
-            BodyElementType elementType = bodyElement.getElementType();
-            if (elementType.name().equals("PARAGRAPH")) {
-                XWPFParagraph pr = (XWPFParagraph) bodyElement;
-                destDoc.createParagraph();
-                int pos = destDoc.getParagraphs().size() - 1;
-                destDoc.setParagraph(pr, pos);
-            } else if( elementType.name().equals("TABLE") ) {
-                XWPFTable table = (XWPFTable) bodyElement;
-                destDoc.createTable();
-                int pos = destDoc.getTables().size() - 1;
-                destDoc.setTable(pos, table);
-            }
-        }
+        Docx result;
 
-        OutputStream out = new FileOutputStream("Destination.docx");
-        FileOutputStream dest = new FileOutputStream("C:\\development\\intelliJProjects\\PagingProto2\\templates\\temp\\test3.docx");
-        destDoc.write(dest);
-        //DocxController.saveToTemp(cover, "test1");
+
+//        ArrayList<Docx> documents = new ArrayList<Docx>();
+//        documents.add(cover);
+//        documents.add(cover2);
+//        documents.add(content);
+//        documents.add(content2);
+//        result =  docxMerge.mergeDocx(documents, true);
+//        result.save("C:\\development\\intelliJProjects\\PagingProto2\\templates\\temp\\test4.docx");
+
+
+
+        Docx temp1 =  new Docx("C:\\development\\intelliJProjects\\PagingProto2\\templates\\temp1.docx");
+        Docx temp2 =  new Docx("C:\\development\\intelliJProjects\\PagingProto2\\templates\\temp2.docx");
+        Docx temp3 =  new Docx("C:\\development\\intelliJProjects\\PagingProto2\\templates\\temp1.docx");
+
+        MyTemplateController.setDummyForMyTemplate(temp1);
+        MyTemplateController.setDummyForMyTemplate(temp3);
+
+
+        ArrayList<Docx> documents2 = new ArrayList<Docx>();
+        //documents2.add(cover);
+        documents2.add(temp1);
+        documents2.add(temp2);
+        documents2.add(temp3);
+        //documents2.add(content);
+
+        result =  docxMerge.mergeDocx(documents2,true);
+
+        result.save("C:\\development\\intelliJProjects\\PagingProto2\\templates\\temp\\myTemplatesMerged.docx");
 
 
     }

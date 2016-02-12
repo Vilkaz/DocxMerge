@@ -11,10 +11,9 @@ import pl.jsolve.templ4docx.variable.Variables;
 public class CoverController {
     public Docx getEmptyCoverTemplate(){
         return new Docx("C:\\development\\intelliJProjects\\PagingProto2\\templates\\template_BASO_cover.docx");
-       // return new Docx("C:\\development\\intelliJProjects\\PagingProto2\\templates\\temp\\test3.docx");
     }
 
-    public static void setDummyData(Docx docx){
+    public static void setDummyDataForCover(Docx docx){
         docx.setVariablePattern(new VariablePattern("${", "}"));
         Variables variables = new Variables();
         variables.addTextVariable(new TextVariable("${headline}", "Geile Headline"));
@@ -22,5 +21,8 @@ public class CoverController {
         variables.addTextVariable(new TextVariable("${project_type}", "projekt typ ist sehr wichtig"));
         docx.fillTemplate(variables);
     }
+
+
+
 }
 

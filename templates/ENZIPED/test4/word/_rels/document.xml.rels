@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
+<Relationship Id="rId1" Target="../customXml/item1.xml" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/customXml"/>
+<Relationship Id="rId10" Target="header2.xml" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/header"/>
+<Relationship Id="rId11" Target="footer2.xml" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/footer"/>
+<Relationship Id="rId12" Target="header3.xml" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/header"/>
+<Relationship Id="rId13" Target="footer3.xml" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/footer"/>
+<Relationship Id="rId14" Target="header4.xml" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/header"/>
+<Relationship Id="rId15" Target="footer4.xml" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/footer"/>
+<Relationship Id="rId16" Target="media/image2.jpeg" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/image"/>
+<Relationship Id="rId17" Target="header5.xml" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/header"/>
+<Relationship Id="rId18" Target="footer5.xml" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/footer"/>
+<Relationship Id="rId19" Target="header6.xml" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/header"/>
+<Relationship Id="rId2" Target="numbering.xml" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/numbering"/>
+<Relationship Id="rId20" Target="footer6.xml" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/footer"/>
+<Relationship Id="rId21" Target="fontTable.xml" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/fontTable"/>
+<Relationship Id="rId22" Target="theme/theme1.xml" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/theme"/>
+<Relationship Id="rId3" Target="styles.xml" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles"/>
+<Relationship Id="rId4" Target="settings.xml" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/settings"/>
+<Relationship Id="rId5" Target="webSettings.xml" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/webSettings"/>
+<Relationship Id="rId6" Target="footnotes.xml" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/footnotes"/>
+<Relationship Id="rId7" Target="endnotes.xml" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/endnotes"/>
+<Relationship Id="rId8" Target="header1.xml" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/header"/>
+<Relationship Id="rId9" Target="footer1.xml" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/footer"/>
+</Relationships>
