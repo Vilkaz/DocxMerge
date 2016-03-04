@@ -1,5 +1,6 @@
 package cover;
 
+import generalSettings.GeneralSettings;
 import pl.jsolve.templ4docx.core.Docx;
 import pl.jsolve.templ4docx.core.VariablePattern;
 import pl.jsolve.templ4docx.variable.TextVariable;
@@ -10,7 +11,7 @@ import pl.jsolve.templ4docx.variable.Variables;
  */
 public class CoverController {
     public Docx getEmptyCoverTemplate(){
-        return new Docx("C:\\development\\intelliJProjects\\PagingProto2\\templates\\template_BASO_cover.docx");
+        return new Docx(GeneralSettings.TEMPLATE_PATH+"/template_BASO_cover.docx");
     }
 
     public static void setDummyDataForCover(Docx docx){

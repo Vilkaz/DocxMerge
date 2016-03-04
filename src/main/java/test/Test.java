@@ -3,6 +3,7 @@ package test;
 import contentPage.ContentPageController;
 import cover.CoverController;
 import docxMerge.DocxMerge;
+import generalSettings.GeneralSettings;
 import myTemplate.MyTemplateController;
 import pl.jsolve.templ4docx.core.Docx;
 
@@ -36,9 +37,9 @@ public class Test {
 
 
 
-        Docx temp1 =  new Docx("C:\\development\\intelliJProjects\\PagingProto2\\templates\\temp1.docx");
-        Docx temp2 =  new Docx("C:\\development\\intelliJProjects\\PagingProto2\\templates\\temp2.docx");
-        Docx temp3 =  new Docx("C:\\development\\intelliJProjects\\PagingProto2\\templates\\temp1.docx");
+        Docx temp1 =  new Docx(GeneralSettings.TEMPLATE_PATH+"/temp1.docx");
+        Docx temp2 =  new Docx(GeneralSettings.TEMPLATE_PATH+"/temp2.docx");
+        Docx temp3 =  new Docx(GeneralSettings.TEMPLATE_PATH+"/temp1.docx");
 
         MyTemplateController.setDummyForMyTemplate(temp1);
         MyTemplateController.setDummyForMyTemplate(temp3);
@@ -53,7 +54,7 @@ public class Test {
 
         result =  docxMerge.mergeDocx(documents2,true);
 
-        result.save("C:\\development\\intelliJProjects\\PagingProto2\\templates\\temp\\myTemplatesMerged.docx");
+        result.save(GeneralSettings.TEMPLATE_PATH+"\\temp\\myTemplatesMerged.docx");
 
     }
 
