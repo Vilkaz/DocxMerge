@@ -1,5 +1,6 @@
 package DocxController;
 
+import generalSettings.GeneralSettings;
 import pl.jsolve.templ4docx.core.Docx;
 
 /**
@@ -7,7 +8,7 @@ import pl.jsolve.templ4docx.core.Docx;
  */
 public  class DocxController {
     public static void saveToTemp(Docx docx, String fileName){
-        docx.save("C:\\development\\intelliJProjects\\PagingProto2\\templates\\temp\\"+fileName+".docx");
+        docx.save(GeneralSettings.TEMPLATE_PATH+"\\temp\\"+fileName+".docx");
     }
 
 

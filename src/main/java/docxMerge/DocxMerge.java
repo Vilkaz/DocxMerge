@@ -1,6 +1,7 @@
 package docxMerge;
 
 import com.sun.xml.internal.ws.api.message.stream.InputStreamMessage;
+import generalSettings.GeneralSettings;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.util.Units;
 import org.apache.poi.xwpf.usermodel.*;
@@ -139,13 +140,13 @@ public class DocxMerge {
             int index = mainParagrahpRun.getEmbeddedPictures().size();
             InputStream pic = null;
             try {
-                pic = new FileInputStream("C:\\development\\intelliJProjects\\PagingProto2\\templates\\relax.jpg");
+                pic = new FileInputStream(GeneralSettings.TEMPLATE_PATH+"\\relax.jpg");
             } catch (FileNotFoundException e1) {
                 // TODO Auto-generated catch block
                 e1.printStackTrace();
             }
             try {
-                mainParagrahpRun.addPicture(pic, XWPFDocument.PICTURE_TYPE_JPEG, "C:\\development\\intelliJProjects\\PagingProto2\\templates\\relax.jpg", Units.toEMU(200), Units.toEMU(200));
+                mainParagrahpRun.addPicture(pic, XWPFDocument.PICTURE_TYPE_JPEG, GeneralSettings.TEMPLATE_PATH+"\\templates\\relax.jpg", Units.toEMU(200), Units.toEMU(200));
             } catch (InvalidFormatException e) {
                 e.printStackTrace();
             } catch (IOException e) {
