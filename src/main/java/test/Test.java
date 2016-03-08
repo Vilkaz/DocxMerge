@@ -1,61 +1,100 @@
 package test;
 
-import contentPage.ContentPageController;
+import com.sun.xml.internal.bind.v2.runtime.JAXBContextImpl;
 import cover.CoverController;
-import docxMerge.DocxMerge;
+import cover.CoverDTO;
+import doc4jTools.PController;
 import generalSettings.GeneralSettings;
-import myTemplate.MyTemplateController;
-import pl.jsolve.templ4docx.core.Docx;
+import org.docx4j.jaxb.Context;
+import org.docx4j.openpackaging.exceptions.Docx4JException;
+import org.docx4j.openpackaging.io.SaveToZipFile;
+import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
+import org.docx4j.openpackaging.parts.WordprocessingML.MainDocumentPart;
+import org.docx4j.wml.*;
+import sieve.SieveController;
 
-import java.util.ArrayList;
+import javax.xml.bind.JAXBIntrospector;
 
 /**
  * Created by vkukanauskas on 09/02/2016.
  */
 public class Test {
+    private static ObjectFactory factory;
+
     public static void main(String[] args) throws Exception {
-        Docx cover = new CoverController().getEmptyCoverTemplate();
-        Docx cover2 = new CoverController().getEmptyCoverTemplate();
-        Docx content = new ContentPageController().getEmptyContentTemplate();
-        Docx content2 = new ContentPageController().getEmptyContentTemplate();
+        factory = Context.getWmlObjectFactory();
 
-        CoverController.setDummyDataForCover(cover);
-        ContentPageController.setDummyForContent(content);
+        long start = System.currentTimeMillis();
+        CoverDTO coverDTO = new CoverDTO("Beste Headline", "projekt name", "dynamischer Projekt type");
 
-        DocxMerge docxMerge = new DocxMerge();
+        WordprocessingMLPackage wordMLPackage = CoverController.getCover(coverDTO);
+        MainDocumentPart documentPart = wordMLPackage.getMainDocumentPart();
 
-        Docx result;
+        addPageBreak(documentPart);
 
-
-//        ArrayList<Docx> documents = new ArrayList<Docx>();
-//        documents.add(cover);
-//        documents.add(cover2);
-//        documents.add(content);
-//        documents.add(content2);
-//        result =  docxMerge.mergeDocx(documents, true);
-//        result.save("C:\\development\\intelliJProjects\\PagingProto2\\templates\\temp\\test4.docx");
+        //region  table aus dem template
 
 
+        String inputfilepath2 = GeneralSettings.TEMPLATE_PATH + "/template_BASO_contentPage.docx";
+        WordprocessingMLPackage wordMLPackage2 = null;
+        try {
+            wordMLPackage2 = WordprocessingMLPackage
+                    .load(new java.io.File(inputfilepath2));
+        } catch (Docx4JException e) {
+            e.printStackTrace();
+        }
 
-        Docx temp1 =  new Docx(GeneralSettings.TEMPLATE_PATH+"/temp1.docx");
-        Docx temp2 =  new Docx(GeneralSettings.TEMPLATE_PATH+"/temp2.docx");
-        Docx temp3 =  new Docx(GeneralSettings.TEMPLATE_PATH+"/temp1.docx");
 
-        MyTemplateController.setDummyForMyTemplate(temp1);
-        MyTemplateController.setDummyForMyTemplate(temp3);
+        MainDocumentPart documentPart2 = wordMLPackage2.getMainDocumentPart();
+
+        for (Object obj : documentPart2.getContent()){
+            System.out.println();
+        }
 
 
-        ArrayList<Docx> documents2 = new ArrayList<Docx>();
-        documents2.add(cover);
-        documents2.add(temp1);
-        //documents2.add(temp2);
-        documents2.add(temp3);
-        //documents2.add(content);
+        /**
+         * in diesem Template ist Tabelle als objekt mit der ID 3
+         */
+        Tbl t2 = (Tbl) JAXBIntrospector.getValue(documentPart2.getContent().get(3));
 
-        result =  docxMerge.mergeDocx(documents2,true);
+        Tr tr = (Tr) t2.getContent().get(7);
 
-        result.save(GeneralSettings.TEMPLATE_PATH+"\\temp\\myTemplatesMerged.docx");
+        Tc tc = (Tc)  JAXBIntrospector.getValue(tr.getContent().get(1));
 
+        P imageP = PController.getPWithImage("sieb1.jpg", wordMLPackage);
+
+        tc.getContent().add(imageP);
+
+
+
+        documentPart.addObject(t2);
+        //endregion table template
+
+
+
+//        Tbl tbl = SieveController.getSieveTable(wordMLPackage);
+//        documentPart.addObject(tbl);
+
+        long total = System.currentTimeMillis() - start;
+        System.out.println("Time: " + total);
+
+        SaveToZipFile saver = new SaveToZipFile(wordMLPackage);
+        String outputfilepath = GeneralSettings.TEMPLATE_PATH + "/OUT_VariableReplace.docx";
+        saver.save(outputfilepath);
+    }
+
+    private static void addPageBreak(MainDocumentPart documentPart) {
+//        P paragraph = factory.createP();
+//        R run = factory.createR();
+        P p = factory.createP();
+        // Create object for r
+        R r = factory.createR();
+        p.getContent().add(r);
+        // Create object for br
+        Br br = factory.createBr();
+        r.getContent().add(br);
+        br.setType(STBrType.PAGE);
+        documentPart.addObject(p);
     }
 
 }
