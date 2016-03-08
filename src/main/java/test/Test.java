@@ -3,6 +3,7 @@ package test;
 import com.sun.xml.internal.bind.v2.runtime.JAXBContextImpl;
 import cover.CoverController;
 import cover.CoverDTO;
+import doc4jTools.MainDocumentPartController;
 import doc4jTools.PController;
 import generalSettings.GeneralSettings;
 import org.docx4j.jaxb.Context;
@@ -14,6 +15,7 @@ import org.docx4j.wml.*;
 import sieve.SieveController;
 
 import javax.xml.bind.JAXBIntrospector;
+import java.math.BigInteger;
 
 /**
  * Created by vkukanauskas on 09/02/2016.
@@ -35,7 +37,7 @@ public class Test {
         //region  table aus dem template
 
 
-        String inputfilepath2 = GeneralSettings.TEMPLATE_PATH + "/template_BASO_contentPage.docx";
+        String inputfilepath2 = GeneralSettings.TEMPLATE_PATH + "/template_BASO_contentPage2.docx";
         WordprocessingMLPackage wordMLPackage2 = null;
         try {
             wordMLPackage2 = WordprocessingMLPackage
@@ -44,36 +46,33 @@ public class Test {
             e.printStackTrace();
         }
 
-
         MainDocumentPart documentPart2 = wordMLPackage2.getMainDocumentPart();
-
-        for (Object obj : documentPart2.getContent()){
-            System.out.println();
-        }
 
 
         /**
-         * in diesem Template ist Tabelle als objekt mit der ID 3
+         * Manuel die Tabele auslesen
          */
-        Tbl t2 = (Tbl) JAXBIntrospector.getValue(documentPart2.getContent().get(3));
+        Tbl t2 = (Tbl) JAXBIntrospector.getValue(documentPart2.getContent().get(0));
+
+        TblPr tblPr = factory.createTblPr();
+        TblWidth tblWidth = factory.createTblWidth();
+        tblWidth.setType(TblWidth.TYPE_DXA);
+        tblWidth.setW(BigInteger.valueOf(5500));
+        tblPr.setTblW(tblWidth);
+        t2.setTblPr(tblPr);
 
         Tr tr = (Tr) t2.getContent().get(7);
-
         Tc tc = (Tc)  JAXBIntrospector.getValue(tr.getContent().get(1));
 
-        P imageP = PController.getPWithImage("sieb1.jpg", wordMLPackage);
+        P imageP = PController.getPWithImage(GeneralSettings.TEMPLATE_PATH+"/sieb1.jpg", wordMLPackage);
+        //tc.getContent().add(imageP);
 
-        tc.getContent().add(imageP);
-
-
-
+        documentPart.addObject(t2);
+        documentPart.addObject(t2);
+        documentPart.addObject(t2);
         documentPart.addObject(t2);
         //endregion table template
 
-
-
-//        Tbl tbl = SieveController.getSieveTable(wordMLPackage);
-//        documentPart.addObject(tbl);
 
         long total = System.currentTimeMillis() - start;
         System.out.println("Time: " + total);

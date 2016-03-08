@@ -8,10 +8,9 @@ import org.docx4j.wml.*;
  * Created by vkukanauskas on 08/03/2016.
  */
 public class MainDocumentPartController {
-    private static ObjectFactory factory;
 
-    private static void addPageBreak(MainDocumentPart documentPart) {
-        factory = Context.getWmlObjectFactory();
+    public static void addPageBreak(MainDocumentPart documentPart) {
+        ObjectFactory  factory = Context.getWmlObjectFactory();
         P paragraph = factory.createP();
         R run = factory.createR();
         P p = factory.createP();

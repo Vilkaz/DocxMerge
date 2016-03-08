@@ -5,15 +5,16 @@ package test;
  */
 
 import doc4jTools.PController;
+import doc4jTools.TableController;
 import generalSettings.GeneralSettings;
-import org.docx4j.dml.wordprocessingDrawing.Inline;
 import org.docx4j.jaxb.Context;
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
-import org.docx4j.openpackaging.parts.WordprocessingML.BinaryPartAbstractImage;
-import org.docx4j.wml.*;
+import org.docx4j.wml.ObjectFactory;
+import org.docx4j.wml.P;
+import org.docx4j.wml.Tbl;
+import org.docx4j.wml.Tr;
 
-import java.io.*;
-import java.math.BigInteger;
+import java.io.File;
 
 public class AddingAnInlineImageToTable {
     private static WordprocessingMLPackage  wordMLPackage;
@@ -32,17 +33,17 @@ public class AddingAnInlineImageToTable {
         factory = Context.getWmlObjectFactory();
 
         Tbl table = factory.createTbl();
-        addBorders(table);
+        TableController.addBorders(table);
 
         Tr tr = factory.createTr();
 
         P paragraphOfText = wordMLPackage.getMainDocumentPart()
                 .createParagraphOfText("Field 1");
-        addTableCell(tr, paragraphOfText);
+        TableController.addTableCell(tr, paragraphOfText);
 
         File file = GeneralSettings.getFile("tecracer.png");
-        P paragraphWithImage = PController.getPWithImage("sieb1.jpg", wordMLPackage );
-        addTableCell(tr, paragraphWithImage);
+        P paragraphWithImage = PController.getPWithImage(GeneralSettings.TEMPLATE_PATH+"/sieb1.jpg", wordMLPackage );
+        TableController.addTableCell(tr, paragraphWithImage);
 
         table.getContent().add(tr);
 
@@ -50,109 +51,6 @@ public class AddingAnInlineImageToTable {
         wordMLPackage.save(GeneralSettings.getFile("HelloWord8.docx"));
     }
 
-    /**
-     * Adds a table cell to the given row with the given paragraph as content.
-     *
-     * @param tr
-     * @param paragraph
-     */
-    private static void addTableCell(Tr tr, P paragraph) {
-        Tc tc1 = factory.createTc();
-        tc1.getContent().add(paragraph);
-        tr.getContent().add(tc1);
-    }
 
-    /**
-     *  Adds the in-line image to a new paragraph and then returns the paragraph.
-     *  Thism method has not changed from the previous example.
-     *
-     * @param inline
-     * @return
-     */
-    private static P addInlineImageToParagraph(Inline inline) {
-        // Now add the in-line image to a paragraph
-        ObjectFactory factory = new ObjectFactory();
-        P paragraph = factory.createP();
-        R run = factory.createR();
-        paragraph.getContent().add(run);
-        Drawing drawing = factory.createDrawing();
-        run.getContent().add(drawing);
-        drawing.getAnchorOrInline().add(inline);
-        return paragraph;
-    }
 
-    /**
-     * Creates an in-line image of the given file.
-     * As in the previous example, we convert the file to a byte array, and then
-     * create an inline image object of it.
-     *
-     * @param file
-     * @return
-     * @throws Exception
-     */
-    private static Inline createInlineImage(File file) throws Exception {
-        byte[] bytes = convertImageToByteArray(file);
-
-        BinaryPartAbstractImage imagePart =
-                BinaryPartAbstractImage.createImagePart(wordMLPackage, bytes);
-
-        int docPrId = 1;
-        int cNvPrId = 2;
-
-        return imagePart.createImageInline("Filename hint",
-                "Alternative text", docPrId, cNvPrId, false);
-    }
-
-    /**
-     * Convert the image from the file into an array of bytes.
-     *
-     * @param file
-     * @return
-     * @throws FileNotFoundException
-     * @throws IOException
-     */
-    private static byte[] convertImageToByteArray(File file)
-            throws FileNotFoundException, IOException {
-        InputStream is = new FileInputStream(file );
-        long length = file.length();
-        // You cannot create an array using a long, it needs to be an int.
-        if (length > Integer.MAX_VALUE) {
-            System.out.println("File too large!!");
-        }
-        byte[] bytes = new byte[(int)length];
-        int offset = 0;
-        int numRead = 0;
-        while (offset < bytes.length                && (numRead=is.read(bytes, offset, bytes.length-offset)) >= 0) {
-            offset += numRead;
-        }
-        // Ensure all the bytes have been read
-        if (offset < bytes.length) {
-            System.out.println("Could not completely read file "+file.getName());
-        }
-        is.close();
-        return bytes;
-    }
-
-    /**
-     * Adds simple black borders to the table
-     *
-     * @param table
-     */
-    private static void addBorders(Tbl table) {
-        table.setTblPr(new TblPr());
-        CTBorder border = new CTBorder();
-        border.setColor("auto");
-        border.setSz(new BigInteger("4"));
-        border.setSpace(new BigInteger("0"));
-        border.setVal(STBorder.SINGLE);
-
-        TblBorders borders = new TblBorders();
-        borders.setBottom(border);
-        borders.setLeft(border);
-        borders.setRight(border);
-        borders.setTop(border);
-        borders.setInsideH(border);
-        borders.setInsideV(border);
-        table.getTblPr().setTblBorders(borders);
-    }
 }

@@ -20,7 +20,7 @@ public class PController {
    public static P getPWithImage(String imageURL,WordprocessingMLPackage wordMLPackage){
        PController.wordMLPackage = wordMLPackage;
        P paragraphWithImage = null;
-       File file = GeneralSettings.getFile(imageURL);
+       File file = new File (imageURL);
        try {
            paragraphWithImage = addInlineImageToParagraph(createInlineImage(file));
        } catch (Exception e) {
